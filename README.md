@@ -33,31 +33,31 @@ This package provides a method to calculate confidence intervals for the DMS-MaP
 ```text
 Provides confidence intervals for DMS-MaPseq data.
 
-    Parameters
-    ----------
+Parameters
+----------
 
-    N : array_like
-        Number of reads for each position.
+N : array_like
+    Number of reads for each position.
 
-    n : array_like
-        Number of mutations for each position.
+n : array_like
+    Number of mutations for each position.
 
-    alpha : float, optional
-        Significance level of the confidence interval. Default is 0.05.
+alpha : float, optional
+    Significance level of the confidence interval. Default is 0.05.
 
-    Returns
-    -------
+Returns
+-------
 
-    low : array_like
-        Lower confidence interval.
+low : array_like
+    Lower confidence interval.
 
-    high : array_like
-        Upper confidence interval.
+high : array_like
+    Upper confidence interval.
 
-    Notes
-    -----
+Notes
+-----
 
-    The confidence intervals are calculated using the Wilson score interval.
+The confidence intervals are calculated using the Wilson score interval.
 ```
 
 
@@ -88,7 +88,7 @@ We will assume that:
 - The experiment is perfectly reproducible.
 - The sequencing is perfect.
 - The only source of error is the random sampling of reads.
-- The mutation probability is NOT constant across the reads (e.g, the probability of observing a mutation at a certain position is not the same for all reads).
+- We DO NOT assume that the mutation probability is constant across the reads (e.g, the probability of observing a mutation at a certain position is not the same for all reads).
 
 ### Method 
 
