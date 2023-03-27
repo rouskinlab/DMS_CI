@@ -86,11 +86,11 @@ We want to know, when observing a mutation rate at a certain position, what is a
 
 We will assume that:
 - The experiment is perfectly reproducible.
-- The sequencing error follows a binomial distribution $Bin(N,10^{-3}}$.
+- The sequencing error follows a binomial distribution $Bin(N,10^{-3})$.
 - The only source of error is the random sampling of reads.
 - The mutation rate is constant across the positions. This is not true in practice, but it is a good approximation for the purpose of this method (see **Why can we approximate the number of mutations with a binomial distribution** below).
 
-Our model is the following: 
+### Model 
 
 $$ p \sim Bin(N, \frac{n}{N}) -  Bin(N, 10^{-3}) $$
 
