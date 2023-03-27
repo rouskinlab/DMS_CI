@@ -86,9 +86,13 @@ We want to know, when observing a mutation rate at a certain position, what is a
 
 We will assume that:
 - The experiment is perfectly reproducible.
-- The sequencing is perfect.
+- The sequencing error follows a binomial distribution $\binom{N}{10^{-3}}$.
 - The only source of error is the random sampling of reads.
-- We DO NOT assume that the mutation probability is constant across the reads (e.g, the probability of observing a mutation at a certain position is not the same for all reads).
+- The mutation rate is constant across the positions. This is not true in practice, but it is a good approximation for the purpose of this method (see **Why can we approximate the number of mutations with a binomial distribution** below).
+
+Our model is the following: $$ p ~ \binom{N}{\hat{p}} + \binom{N}{10^{-3}} $$
+
+where $p$ is the number of mutations, $N$ is the number of reads, and $\mu$ is the mutation rate.
 
 ### Method 
 
