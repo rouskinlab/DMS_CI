@@ -113,6 +113,10 @@ We compared the performances of the following methods:
    
 Wilson score has shown to be the best method for small sample sizes (<3,000 reads), and performs comparably to best-performing bootstrapping for larger sample sizes.
 
+We use 4 real datasets to compare the methods. The mutation rate distribution across the positions is shown in the following figure.
+
+![Mutation rates distribution](figs/mr_distribution.png)
+
 The following figure shows the results of a simulation comparing the performance of different methods for binomial distributions confidence intervals. 
 1. We loaded ``4 real datasets`` of over ``200,000 reads``, each read being ``170 nucleotides`` long. The mutation rate distribution across the positions is shown in figure A.
 2. We subsampled ``N = [500, 1000, 2000, 3000, 5000, 10000] reads``,  ``100,000 times`` from each dataset, and calculated the confidence intervals for each position using the different methods.
@@ -122,7 +126,6 @@ A good method should have a small bias (e.g, be centered around 5%) and a small 
 
 ![Models comparison](figs/compare_models.png)
 
-![Mutation rates distribution](figs/mr_distribution.png)
 
 ### Why can we approximate the number of mutations with a binomial distribution?
 
