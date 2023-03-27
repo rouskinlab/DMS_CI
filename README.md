@@ -90,9 +90,9 @@ We will assume that:
 - The only source of error is the random sampling of reads.
 - The mutation rate is constant across the positions. This is not true in practice, but it is a good approximation for the purpose of this method (see **Why can we approximate the number of mutations with a binomial distribution** below).
 
-Our model is the following: $$ p ~ \binom{N}{\hat{p}} + \binom{N}{10^{-3}} $$
+Our model is the following: $$ p \sim Bin(N, \frac{n}{N}) -  Bin(N, 10^{-3}) $$
 
-where $p$ is the number of mutations, $N$ is the number of reads, and $\mu$ is the mutation rate.
+where p is the substitution rate in the sample, $n$ is the number of mutations and $N$ is the number of reads.
 
 ### Method 
 
