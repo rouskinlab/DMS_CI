@@ -85,14 +85,16 @@ We want to know, when observing a mutation rate at a certain position, what is a
 ### Assumptions
 
 We will assume that:
-- The experiment is perfectly reproducible.
-- The sequencing error follows a binomial distribution $Bin(N,10^{-3})$.
-- The only source of error is the random sampling of reads.
+- The only sources of error are the random sampling of reads and the sequencing error.
+- The sequencing error follows a binomial distribution $Bin(N,10^{-3})$ [Sequencing data error analysis paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1659-6).
 - The mutation rate is constant across the positions. This is not true in practice, but it is a good approximation for the purpose of this method (see **Why can we approximate the number of mutations with a binomial distribution** below).
+- The experiment is perfectly reproducible.
 
 ### Model 
 
-$$ p \sim Bin(N, \frac{n}{N}) -  Bin(N, 10^{-3}) $$
+$$p_{err seq} = 10^{-3}$$
+
+$$ p \sim Bin(N, \frac{n}{N}) -  Bin(N, p_{err seq}) $$
 
 where p is the substitution rate in the sample, $n$ is the number of mutations and $N$ is the number of reads.
 
@@ -100,7 +102,7 @@ where p is the substitution rate in the sample, $n$ is the number of mutations a
 
 We use the **Wilson score interval**, which is a method to calculate confidence intervals for binomial distributions.
 
-$$ \hat{p} = \frac{n}{N} $$
+$$ \hat{p} = max(0, \frac{n}{N} - p_{err seq}) $$
 
 $$ z_{\alpha/2} = \Phi^{-1}(1-\alpha/2) $$
 
