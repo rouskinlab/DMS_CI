@@ -120,14 +120,10 @@ The following figure shows the results of a simulation comparing the performance
 
 A good method should have a small bias (e.g, be centered around 5%) and a small variance. 
 
+[insert html figure: figs/compare_models.html here]
 
-```python
-from src import compare_methods
-compare_methods()
-```
+[bla](figs/compare_models.html)!
 
-    The autoreload extension is already loaded. To reload it, use:
-      %reload_ext autoreload
 
 
 

@@ -6,9 +6,10 @@ import plotly.express as px
 import scipy
 import plotly
 
-N_TRIAL_PER_DATASET = 1
-SIZE_SAMPLE = [500, 1000, 2000, 3000, 5000, 10000]
+N_TRIAL_PER_DATASET = 100
+SIZE_SAMPLE = [500, 1000, 2000, 3000, 5000, 10000, 20000, 50000]
 DATAPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
+FIGPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'figs'))
 
 def bootstrap(sample, n=1000):
     """
@@ -48,7 +49,7 @@ def wilson(p, n, z = 1.96):
     centre_adjusted_probability = p + z*z / (2*n)
     adjusted_standard_deviation = np.sqrt((p*(1 - p) + z*z / (4*n)) / n)
     
-    lower_bound = (centre_adjusted_probability - z*adjusted_standard_deviation) / denominator
+    lower_bound = (centre_adjusted_probability -  z*adjusted_standard_deviation) / denominator
     upper_bound = (centre_adjusted_probability + z*adjusted_standard_deviation) / denominator
     return (lower_bound, upper_bound)
 
@@ -98,40 +99,40 @@ def compare_methods():
                 sub_rate_vector.append(true_mutation_rate)
                 
                 # count failures bootstrap
-                lb_bs, ub_bs = predict_confidence_interval_bootstrap(sample, bootstrap_iterations=bootstrap_iterations)
-                fail['bootstrap'].append(100*np.logical_or(ub_bs < true_mutation_rate, lb_bs > true_mutation_rate).sum()/data.shape[1])
-                size['bootstrap'].append(np.mean(ub_bs - lb_bs))
-                failures_vector['bootstrap'].append(np.logical_or(ub_bs < true_mutation_rate, lb_bs > true_mutation_rate))
+               # lb_bs, ub_bs = predict_confidence_interval_bootstrap(sample, bootstrap_iterations=bootstrap_iterations)
+               # fail['bootstrap'].append(100*np.logical_or(ub_bs < true_mutation_rate, lb_bs > true_mutation_rate).sum()/data.shape[1])
+              #  size['bootstrap'].append(np.mean(ub_bs - lb_bs))
+              #  failures_vector['bootstrap'].append(np.logical_or(ub_bs < true_mutation_rate, lb_bs > true_mutation_rate))
                 
                 # count failures binomial
                 lb_bin, ub_bin = predict_confidence_interval_binomial_distribution(observed_freq, size_sample)
-                fail['binomial'].append(100*np.logical_or(ub_bs < true_mutation_rate, lb_bs > true_mutation_rate).sum()/data.shape[1])
+                fail['binomial'].append(100*np.logical_or(ub_bin < true_mutation_rate, lb_bin > true_mutation_rate).sum()/data.shape[1])
                 size['binomial'].append(np.mean(ub_bin - lb_bin))
-                failures_vector['binomial'].append(np.logical_or(ub_bs < true_mutation_rate, lb_bs > true_mutation_rate))
+                failures_vector['binomial'].append(np.logical_or(ub_bin < true_mutation_rate, lb_bin > true_mutation_rate))
                 
                 # count Wilson failures
                 lb_wilson, ub_wilson = wilson(observed_freq, size_sample)
                 fail['wilson'].append(100*np.logical_or(ub_wilson < true_mutation_rate, lb_wilson > true_mutation_rate).sum()/data.shape[1])
                 size['wilson'].append(np.mean(ub_wilson - lb_wilson))
-                failures_vector['wilson'].append(np.logical_or(ub_bs < true_mutation_rate, lb_bs > true_mutation_rate))
+                failures_vector['wilson'].append(np.logical_or(ub_wilson < true_mutation_rate, lb_wilson > true_mutation_rate))
                 
                 # count Clopper-Pearson failures
                 lb_cp, ub_cp = clopper_pearson(observed_freq*size_sample, size_sample)
                 fail['clopper_pearson'].append(100*np.logical_or(ub_cp < true_mutation_rate, lb_cp > true_mutation_rate).sum()/data.shape[1])
                 size['clopper_pearson'].append(np.mean(ub_cp - lb_cp))
-                failures_vector['clopper_pearson'].append(np.logical_or(ub_bs < true_mutation_rate, lb_bs > true_mutation_rate))
+                failures_vector['clopper_pearson'].append(np.logical_or(ub_cp < true_mutation_rate, lb_cp > true_mutation_rate))
                 
                 # count Agresti-Coull failures
                 lb_ac, ub_ac = agresti_coull(observed_freq*size_sample, size_sample)
                 fail['agresti_coull'].append(100*np.logical_or(ub_ac < true_mutation_rate, lb_ac > true_mutation_rate).sum()/data.shape[1])
                 size['agresti_coull'].append(np.mean(ub_ac - lb_ac))
-                failures_vector['agresti_coull'].append(np.logical_or(ub_bs < true_mutation_rate, lb_bs > true_mutation_rate))
+                failures_vector['agresti_coull'].append(np.logical_or(ub_ac < true_mutation_rate, lb_ac > true_mutation_rate))
                 
                 # count Poisson failures
                 lb_poisson, ub_poisson = predict_confidence_interval_poisson(observed_freq, size_sample)
                 fail['poisson'].append(100*np.logical_or(ub_poisson < true_mutation_rate, lb_poisson > true_mutation_rate).sum()/data.shape[1])
                 size['poisson'].append(np.mean(ub_poisson - lb_poisson))
-                failures_vector['poisson'].append(np.logical_or(ub_bs < true_mutation_rate, lb_bs > true_mutation_rate))
+                failures_vector['poisson'].append(np.logical_or(ub_poisson < true_mutation_rate, lb_poisson > true_mutation_rate))
 
             for m in methods:
                 failures[m].append(fail[m])
@@ -141,7 +142,7 @@ def compare_methods():
         
         df = pd.DataFrame(
             {
-                'Bootstrap': np.array(failures['bootstrap']).flatten(), 
+                'Bootstrap': np.array(failures['binomial']).flatten(), 
                 #'Binomial': np.array(failures['binomial']).flatten(), 
                 'Wilson': np.array(failures['wilson']).flatten(),
                 'Clopper-Pearson': np.array(failures['clopper_pearson']).flatten(),
@@ -154,7 +155,7 @@ def compare_methods():
 
         df = pd.DataFrame(
             {
-                'Bootstrap': np.array(size_ci['bootstrap']).flatten(), 
+                'Bootstrap': np.array(size_ci['binomial']).flatten(), 
                 #'Binomial': np.array(size_ci['binomial']).flatten(), 
                 'Wilson': np.array(size_ci['wilson']).flatten(),
                 'Clopper-Pearson': np.array(size_ci['clopper_pearson']).flatten(),
@@ -164,14 +165,23 @@ def compare_methods():
             })
         size_df = pd.concat([size_df, df], axis=0)
         
-    fig = px.box(failures_df, y=[c for c in df.columns if c != 'size_sample'], color='size_sample', title='Failure rate of the confidence interval methods. n_bootstrap = {}, n_iter = {} iterations *{} datasets'.format(bootstrap_iterations, n_trials_per_dataset, len(os.listdir(DATAPATH))))
+    fig = px.box(failures_df, y=[c for c in df.columns if c != 'size_sample'], color='size_sample', title='Failure rate of the confidence interval methods. N = {} sub-datasets *{} datasets. L = 170.'.format(bootstrap_iterations, n_trials_per_dataset, len(os.listdir(DATAPATH))))
     fig.update_yaxes(title_text="Failure rate (%)")
     fig.update_xaxes(title_text="Method")
-
+    # don't show dots
+    fig.update_traces(marker_size=0)
+    
+    
     # add a horizontal line at y=5 all the way across the figure legend y=5 
     fig.add_shape(type="line", x0=0, y0=5, x1=1, y1=5, line=dict(color="Green", width=2, dash="dash"), xref="paper", yref="y")
 
     fig.show()
+    
+    a = fig.to_html()
+    with open(os.path.join(FIGPATH, 'compare_models.html'), 'w') as f:
+        f.write(a)
+    # save to file
+    
         
     # fig = px.box(size_df, y=[c for c in df.columns if c != 'size_sample'], color='size_sample', title='Size of the confidence interval methods. n_bootstrap = {}, n_iter = {} iterations *{} datasets'.format(bootstrap_iterations, n_trials_per_dataset, len(os.listdir('../../bv'))))
     # fig.update_yaxes(title_text="Size of the CI")
@@ -183,16 +193,47 @@ def compare_methods():
 
     
 def how_to_pick_N():
-    pass
+    P = np.arange(0, 0.11, 0.01)
+    df = pd.DataFrame(columns=SIZE_SAMPLE, index = P)
+    for n in SIZE_SAMPLE:
+        for p in P:
+            df.loc[p, n] = wilson(p, n)[1] - wilson(p, n)[0]
+    
+    fig = px.line(df, x=P, y=SIZE_SAMPLE, title='How to pick N?', labels={'x': 'Mutation rate', 'y': 'Size of the CI'})
+
+    fig.update_layout(
+        title = 'Select N to get a CI of a given size',
+        xaxis_title = 'Mutation rate',
+        yaxis_title = 'Size of the CI',
+        legend_title = 'N := number of reads',
+    )
+    
+    fig.update_xaxes(title_text="Mutation rate")
+    fig.show()
+    
+    a = fig.to_html()
+    with open(os.path.join(FIGPATH, 'how_to_pick_N.html'), 'w') as f:
+        f.write(a)    
+        
 
 def plot_mr_distribution():
-    pass
+    mr = []
+    for f in os.listdir(DATAPATH):
+        data = process_data(pd.read_orc(os.path.join(DATAPATH, f)))
+        mr += (data.sum(axis=0)/data.shape[0]).tolist()
+        
+    fig = px.histogram(pd.DataFrame({'mr': mr}), x='mr', nbins=100, title='Distribution of the mutation rate in the dataset')
+    fig.show()
+    
+    a = fig.to_html()
+    with open(os.path.join(FIGPATH, 'mr_distribution.html'), 'w') as f:
+        f.write(a)
+        
+        
 
 def generate_plots():
-    plot_mr_distribution()
-    # save a plotly figure
-
-    compare_methods()
+    #plot_mr_distribution()
+    #compare_methods()
     how_to_pick_N()
     
 if __name__ == '__main__':
