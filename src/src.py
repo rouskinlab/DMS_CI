@@ -1,15 +1,14 @@
-import ipynbname
 import pandas as pd
 import numpy as np
-import json
 import os
 import statsmodels.api as sm
 import plotly.express as px
 import scipy
+import plotly
 
-N_TRIAL_PER_DATASET = 100000
+N_TRIAL_PER_DATASET = 1
 SIZE_SAMPLE = [500, 1000, 2000, 3000, 5000, 10000]
-DATAPATH = os.path.abspath(os.path.join(os.path.dirname(ipynbname.path()), '..', 'data'))
+DATAPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
 
 def bootstrap(sample, n=1000):
     """
@@ -165,7 +164,7 @@ def compare_methods():
             })
         size_df = pd.concat([size_df, df], axis=0)
         
-    fig = px.box(failures_df, y=[c for c in df.columns if c != 'size_sample'], color='size_sample', title='Failure rate of the confidence interval methods. n_bootstrap = {}, n_iter = {} iterations *{} datasets'.format(bootstrap_iterations, n_trials_per_dataset, len(os.listdir('../../bv'))))
+    fig = px.box(failures_df, y=[c for c in df.columns if c != 'size_sample'], color='size_sample', title='Failure rate of the confidence interval methods. n_bootstrap = {}, n_iter = {} iterations *{} datasets'.format(bootstrap_iterations, n_trials_per_dataset, len(os.listdir(DATAPATH))))
     fig.update_yaxes(title_text="Failure rate (%)")
     fig.update_xaxes(title_text="Method")
 
@@ -181,3 +180,20 @@ def compare_methods():
 
     # # save to file
     # util.save_plotly_fig(ipynbname.path(), '[B] Size of the confidence interval methods', fig)
+
+    
+def how_to_pick_N():
+    pass
+
+def plot_mr_distribution():
+    pass
+
+def generate_plots():
+    plot_mr_distribution()
+    # save a plotly figure
+
+    compare_methods()
+    how_to_pick_N()
+    
+if __name__ == '__main__':
+    generate_plots()

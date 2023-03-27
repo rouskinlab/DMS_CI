@@ -1,4 +1,3 @@
-[Automatically generated from src/README.ipynb]
 
 # DMS confidence intervals
 
@@ -28,10 +27,38 @@ This package provides a method to calculate confidence intervals for the DMS-MaP
 
 
 ```python
-from dms_ci import dms_ci
-print(dms_ci.__doc__)
+>>> from dms_ci import dms_ci
+>>> print(dms_ci.__doc__)
 ```
+```text
+Provides confidence intervals for DMS-MaPseq data.
 
+    Parameters
+    ----------
+
+    N : array_like
+        Number of reads for each position.
+
+    n : array_like
+        Number of mutations for each position.
+
+    alpha : float, optional
+        Significance level of the confidence interval. Default is 0.05.
+
+    Returns
+    -------
+
+    low : array_like
+        Lower confidence interval.
+
+    high : array_like
+        Upper confidence interval.
+
+    Notes
+    -----
+
+    The confidence intervals are calculated using the Wilson score interval.
+```
 
 
 ## About the DMS-MaPseq method
