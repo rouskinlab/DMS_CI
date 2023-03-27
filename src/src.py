@@ -177,8 +177,12 @@ def compare_methods():
 
     fig.show()
     
-    a = fig.to_html()
-    with open(os.path.join(FIGPATH, 'compare_models.html'), 'w') as f:
+    # a = fig.to_html()
+    # with open(os.path.join(FIGPATH, 'compare_models.html'), 'w') as f:
+    #     f.write(a)
+        
+    a = fig.to_image(format='png')
+    with open(os.path.join(FIGPATH, 'compare_models.png'), 'wb') as f:
         f.write(a)
     # save to file
     
@@ -211,9 +215,13 @@ def how_to_pick_N():
     fig.update_xaxes(title_text="Mutation rate")
     fig.show()
     
-    a = fig.to_html()
-    with open(os.path.join(FIGPATH, 'how_to_pick_N.html'), 'w') as f:
-        f.write(a)    
+    # a = fig.to_html()
+    # with open(os.path.join(FIGPATH, 'how_to_pick_N.html'), 'w') as f:
+    #     f.write(a)    
+        
+    a = fig.to_image(format="png", engine="kaleido")
+    with open(os.path.join(FIGPATH, 'how_to_pick_N.png'), 'wb') as f:
+        f.write(a)
         
 
 def plot_mr_distribution():
@@ -225,15 +233,18 @@ def plot_mr_distribution():
     fig = px.histogram(pd.DataFrame({'mr': mr}), x='mr', nbins=100, title='Distribution of the mutation rate in the dataset')
     fig.show()
     
-    a = fig.to_html()
-    with open(os.path.join(FIGPATH, 'mr_distribution.html'), 'w') as f:
-        f.write(a)
+    # a = fig.to_html()
+    # with open(os.path.join(FIGPATH, 'mr_distribution.html'), 'w') as f:
+    #     f.write(a)
         
+    a = fig.to_image(format="png", engine="kaleido")
+    with open(os.path.join(FIGPATH, 'mr_distribution.png'), 'wb') as f:
+        f.write(a)
         
 
 def generate_plots():
-    #plot_mr_distribution()
-    #compare_methods()
+    plot_mr_distribution()
+    compare_methods()
     how_to_pick_N()
     
 if __name__ == '__main__':
