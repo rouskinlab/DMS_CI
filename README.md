@@ -122,8 +122,7 @@ A good method should have a small bias (e.g, be centered around 5%) and a small 
 
 [insert html figure: figs/compare_models.html here]
 
-[bla](figs/compare_models.html)!
-
+htmllink: figs/compare_models.html
 
 
 
