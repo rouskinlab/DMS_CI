@@ -151,7 +151,7 @@ According to [the binomial sum variance inequality](https://en.wikipedia.org/wik
 
 $$ Var(f([p_1, p_2, ..., p_N])) ≤ Np(1-p) $$ 
 
-where $p = \frac{1}{N} \sum{i=1}^{N} p_i $.
+$$p = \frac{1}{N} \sum_{i=1}^N p_i $$
 
 We can then use the binomial distribution $X \sim Bin(N, p)$ to approximate $f([p_1, p_2, ..., p_N])$.
 
