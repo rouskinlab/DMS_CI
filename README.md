@@ -69,7 +69,7 @@ DMS-MaPseq is a chemical probing method combined with high throughput sequencing
 
 ## About the confidence intervals method
 
-The confidence intervals method is based on the assumption that the number of modified nucleotides is a binomial distribution. The confidence intervals are calculated using the Wilson score interval, which has shown to perform better than bootstrapping for small sample sizes (<3,000 reads). The method is decribed in details below.
+The confidence intervals are calculated using the Wilson score interval with a sequencing error bias correction. Multip which has shown to perform better than bootstrapping for small sample sizes (<3,000 reads). The method is decribed in details below.
 
 ### Basics and terminology
 
