@@ -44,7 +44,9 @@ def predict_confidence_interval_binomial_distribution(observed_freq, size_sample
     return lower_bound, upper_bound
     
     
-def wilson(p, n, z = 1.96):
+def wilson(p, n, z = 1.96, bias_correction=0):
+    
+    p = np.array(p) + bias_correction
     denominator = 1 + z**2/n
     centre_adjusted_probability = p + z*z / (2*n)
     adjusted_standard_deviation = np.sqrt((p*(1 - p) + z*z / (4*n)) / n)
@@ -65,6 +67,8 @@ def predict_confidence_interval_poisson(observed_freq, size_sample, alpha=0.05):
     mut = observed_freq*size_sample
     return 0.5*scipy.stats.chi2.ppf(alpha/2, df=2*mut)/cov, 0.5*scipy.stats.chi2.ppf(1-alpha/2, df=2*(mut+1))/cov
 
+def failure_to_success(arr):
+    return [100 - m for m in arr]
 
 def compare_methods():
     
@@ -142,12 +146,12 @@ def compare_methods():
         
         df = pd.DataFrame(
             {
-                'Bootstrap': np.array(failures['binomial']).flatten(), 
+                'Bootstrap': failure_to_success(np.array(failures['binomial']).flatten()), 
                 #'Binomial': np.array(failures['binomial']).flatten(), 
-                'Wilson': np.array(failures['wilson']).flatten(),
-                'Clopper-Pearson': np.array(failures['clopper_pearson']).flatten(),
-                'Agresti-Coull': np.array(failures['agresti_coull']).flatten(),
-                'Poisson': np.array(failures['poisson']).flatten(),
+                'Wilson': failure_to_success(np.array(failures['wilson']).flatten()),
+                'Clopper-Pearson': failure_to_success(np.array(failures['clopper_pearson']).flatten()),
+                'Agresti-Coull': failure_to_success(np.array(failures['agresti_coull']).flatten()),
+                'Poisson': failure_to_success(np.array(failures['poisson']).flatten()),
                 'size_sample': size_sample,
             })
 
@@ -165,16 +169,14 @@ def compare_methods():
             })
         size_df = pd.concat([size_df, df], axis=0)
         
-    fig = px.box(failures_df, y=[c for c in df.columns if c != 'size_sample'], color='size_sample', title='Failure rate of the confidence interval methods. N = {} sub-datasets *{} datasets. L = 170.'.format(bootstrap_iterations, n_trials_per_dataset, len(os.listdir(DATAPATH))))
-    fig.update_yaxes(title_text="Failure rate (%)")
-    fig.update_xaxes(title_text="Method")
-    # don't show dots
-    fig.update_traces(marker_size=0)
-    
-    
-    # add a horizontal line at y=5 all the way across the figure legend y=5 
-    fig.add_shape(type="line", x0=0, y0=5, x1=1, y1=5, line=dict(color="Green", width=2, dash="dash"), xref="paper", yref="y")
-
+    fig = px.box(failures_df, y=[c for c in df.columns if c != 'size_sample'], color='size_sample', title='Success rate of the confidence interval methods. # of runs: {}. L = 170.'.format(3*n_trials_per_dataset * len(os.listdir(DATAPATH))))
+    fig.update_yaxes(title_text="Success rate (%)")
+    fig.update_xaxes(title_text="Method")    
+    fig.update_traces(boxpoints=False) 
+    #   add a horizontal line at y=5 all the way across the figure legend y=5 
+    fig.add_shape(type="line", x0=0, y0=95, x1=1, y1=95, line=dict(color="Green", width=2, dash="dash"), xref="paper", yref="y")
+    # label that line "95%"
+    fig.add_annotation(x=-0.03, y=95, text="95%", showarrow=False, xref="paper", yref="y")
     fig.show()
     
     # a = fig.to_html()
@@ -201,7 +203,7 @@ def how_to_pick_N():
     df = pd.DataFrame(columns=SIZE_SAMPLE, index = P)
     for n in SIZE_SAMPLE:
         for p in P:
-            df.loc[p, n] = wilson(p, n)[1] - wilson(p, n)[0]
+            df.loc[p, n] = wilson(p, n, bias_correction=1E-3)[1] - wilson(p, n, bias_correction=1E-3)[0]
     
     fig = px.line(df, x=P, y=SIZE_SAMPLE, title='How to pick N?', labels={'x': 'Mutation rate', 'y': 'Size of the CI'})
 
@@ -213,7 +215,6 @@ def how_to_pick_N():
     )
     
     fig.update_xaxes(title_text="Mutation rate")
-    fig.show()
     
     # a = fig.to_html()
     # with open(os.path.join(FIGPATH, 'how_to_pick_N.html'), 'w') as f:
@@ -238,7 +239,6 @@ def plot_mr_distribution():
         yaxis_title = 'Count',
     )
     
-    fig.show()
     
     # a = fig.to_html()
     # with open(os.path.join(FIGPATH, 'mr_distribution.html'), 'w') as f:

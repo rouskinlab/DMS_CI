@@ -1,4 +1,4 @@
-from src import wilson
+from .src import wilson
 
 def dms_ci(p, n, z = 1.96):
     """Provides confidence intervals for DMS-MaPseq data.
@@ -27,8 +27,9 @@ def dms_ci(p, n, z = 1.96):
     Notes
     -----
 
-    The confidence intervals are calculated using the Wilson score interval.
+    The confidence intervals are calculated using the Wilson score interval. The bias correction is set to 1E-3, to balance for the substitution errors in the sequencing. 
 
     """
-    return wilson(p, n, z)
+    
+    return wilson(p, n, z, bias_correction=1E-3)
     

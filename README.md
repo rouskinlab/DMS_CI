@@ -92,15 +92,15 @@ We will assume that:
 
 ### Model 
 
-$$p_{err_seq} = 10^{-3}$$
+$$p_{errseq} = 10^{-3}$$
 
-$$ p \sim Bin(N, \frac{n}{N}) -  Bin(N, p_{err_seq}) $$
+$$ p \sim Bin(N, \frac{n}{N}) -  Bin(N, p_{errseq}) $$
 
 where p is the substitution rate in the sample, $n$ is the number of mutations and $N$ is the number of reads.
 
-Given the small value of $p_{err_seq}$, we can approximate the binomial distribution as follows:
+Given the small value of $p_{errseq}$, we can approximate the distribution as follows:
 
-$$ p \sim Bin(N,max(0, \frac{n}{N} - p_{err_seq}))$$
+$$ p \sim Bin(N,max(0, \frac{n}{N} - p_{errseq}))$$
 
 
 
@@ -108,7 +108,7 @@ $$ p \sim Bin(N,max(0, \frac{n}{N} - p_{err_seq}))$$
 
 We use the **Wilson score interval**, which is a method to calculate confidence intervals for binomial distributions.
 
-$$ \hat{p} = max(0, \frac{n}{N} - p_{err_seq}) $$
+$$ \hat{p} = max(0, \frac{n}{N} - p_{errseq}) $$
 
 $$ z_{\alpha/2} = \Phi^{-1}(1-\alpha/2) $$
 
@@ -151,7 +151,7 @@ According to [the binomial sum variance inequality](https://en.wikipedia.org/wik
 
 $$ Var(f([p_1, p_2, ..., p_N])) ≤ Np(1-p) $$ 
 
-where $p = \frac{1}{N} \sum_{i=1}^{N} p_i $.
+where $p = \frac{1}{N} \sum{i=1}^{N} p_i $.
 
 We can then use the binomial distribution $X \sim Bin(N, p)$ to approximate $f([p_1, p_2, ..., p_N])$.
 
