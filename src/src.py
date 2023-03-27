@@ -6,7 +6,7 @@ import plotly.express as px
 import scipy
 import plotly
 
-N_TRIAL_PER_DATASET = 100
+N_TRIAL_PER_DATASET = 10000
 SIZE_SAMPLE = [500, 1000, 2000, 3000, 5000, 10000, 20000, 50000]
 DATAPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
 FIGPATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'figs'))
@@ -231,6 +231,13 @@ def plot_mr_distribution():
         mr += (data.sum(axis=0)/data.shape[0]).tolist()
         
     fig = px.histogram(pd.DataFrame({'mr': mr}), x='mr', nbins=100, title='Distribution of the mutation rate in the dataset')
+    
+    fig.update_layout(
+        title = 'Distribution of the mutation rate in the dataset',
+        xaxis_title = 'Mutation rate',
+        yaxis_title = 'Count',
+    )
+    
     fig.show()
     
     # a = fig.to_html()

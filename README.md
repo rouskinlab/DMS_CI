@@ -119,7 +119,7 @@ We use 4 real datasets to compare the methods. The mutation rate distribution ac
 
 The following figure shows the results of a simulation comparing the performance of different methods for binomial distributions confidence intervals. 
 1. We loaded ``4 real datasets`` of over ``200,000 reads``, each read being ``170 nucleotides`` long. The mutation rate distribution across the positions is shown in figure A.
-2. We subsampled ``N = [500, 1000, 2000, 3000, 5000, 10000] reads``,  ``100,000 times`` from each dataset, and calculated the confidence intervals for each position using the different methods.
+2. We subsampled ``N = [500, 1000, 2000, 3000, 5000, 10000] reads``,  ``10,000 times`` from each dataset, and calculated the confidence intervals for each position using the different methods.
 3. For each read of ``170 nucleotides``, we calculated how many times the true mutation rate was within the confidence interval for each method. The distribution of this "success rate" is shown in figure B. 
 
 A good method should have a small bias (e.g, be centered around 5%) and a small variance. 
@@ -140,4 +140,10 @@ $$ Var(f([p_1, p_2, ..., p_N])) ≤ Np(1-p) $$
 where $p = \frac{1}{N} \sum_{i=1}^{N} p_i $.
 
 We can then use the binomial distribution $X \sim Bin(N, p)$ to approximate $f([p_1, p_2, ..., p_N])$.
+
+### Select N given a maximum confidence interval width and a maximum mutation rate
+
+Read the following plot to understand how to select N given a maximum confidence interval width and a maximum mutation rate.
+
+![Select N](figs/how_to_pick_N.png)
 
