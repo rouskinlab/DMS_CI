@@ -3,8 +3,6 @@ import numpy as np
 import os
 import statsmodels.api as sm
 import plotly.express as px
-import scipy
-import plotly
 
 N_TRIAL_PER_DATASET = 10000
 SIZE_SAMPLE = [500, 1000, 2000, 3000, 5000, 10000, 20000, 50000]
