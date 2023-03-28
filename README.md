@@ -69,7 +69,7 @@ DMS-MaPseq is a chemical probing method combined with high throughput sequencing
 
 ## About the confidence intervals method
 
-The confidence intervals are calculated using the Wilson score interval with a sequencing error bias correction. Multip which has shown to perform better than bootstrapping for small sample sizes (<3,000 reads). The method is decribed in details below.
+The confidence intervals are calculated using the Wilson score interval with a sequencing error bias correction. Wilson score interval which has shown to perform better than bootstrapping for small sample sizes (<3,000 reads). The method is decribed in details below.
 
 ### Basics and terminology
 
@@ -87,7 +87,7 @@ We want to know, when observing a mutation rate at a certain position, what is a
 We will assume that:
 - The only sources of error are the random sampling of reads and the sequencing error.
 - The sequencing error follows a binomial distribution $Bin(N,10^{-3})$ (see the [sequencing data error analysis paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1659-6)).
-- The mutation rate is constant across the positions. This is not true in practice, but it is a good approximation for the purpose of this method (see **Why can we approximate the number of mutations with a binomial distribution** below).
+- The mutation rate is constant across the reads fot a certain position. This is not true in practice, but it is a good approximation for the purpose of this method (see **Why can we approximate the number of mutations with a binomial distribution** below).
 - The experiment is perfectly reproducible.
 
 ### Model 
@@ -145,7 +145,9 @@ A good method should have a small bias (e.g, be centered around 5%) and a small 
 
 Let's say we have a set of ``N`` reads of a single nucleotide, and ``n`` of them are mutated. The mutation rate is then ``n/N``. We want a confidence interval for this mutation rate.
 
-Let's define $p_i$ the probability of mutation for the i-th read. Then ``n`` follows the distribution $f([p_1, p_2, ..., p_N]) := \sum_{i=1}^{N} X_i$, where $X_i$ is a Bernoulli random variable with parameter $p_i$.
+Let's define $p_i$ the probability of mutation for the i-th read. Then ``n`` follows the distribution 
+$$f([p_1, p_2, ..., p_N]) := \sum_{i=1}^{N} X_i$$
+where $X_i$ is a Bernoulli random variable with parameter $p_i$.
 
 According to [the binomial sum variance inequality](https://en.wikipedia.org/wiki/Binomial_sum_variance_inequality), the variance of the sum of $N$ independent Bernoulli random variables is bounded by $Np(1-p)$, where $p$ is the mean of the Bernoulli random variables. In our case, 
 
@@ -153,7 +155,7 @@ $$ Var(f([p_1, p_2, ..., p_N])) ≤ Np(1-p) $$
 
 $$p = \frac{1}{N} \sum_{i=1}^N p_i $$
 
-We can then use the binomial distribution $X \sim Bin(N, p)$ to approximate $f([p_1, p_2, ..., p_N])$.
+Therefore, a confidence interval based on the binomial distribution $X \sim Bin(N, p)$ will encompass $f([p_1, p_2, ..., p_N])$.
 
 ### Select N given a maximum confidence interval width and a maximum mutation rate
 
