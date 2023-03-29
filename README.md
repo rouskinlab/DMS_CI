@@ -45,6 +45,9 @@ n : array_like
 alpha : float, optional
     Significance level of the confidence interval. Default is 0.05.
 
+sub_error: float, optional
+    Probability of having a substitution error in the sequencing. Used to unbias the CI. Default is 1E-3. Read the README for more details.
+
 Returns
 -------
 
@@ -57,8 +60,7 @@ high : array_like
 Notes
 -----
 
-The confidence intervals are calculated using the Wilson score interval. 
-A correction is applied to take into account the substitution error.
+The confidence intervals are calculated using the Wilson score interval with a bias correction. 
 ```
 
 
