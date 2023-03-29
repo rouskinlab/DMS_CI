@@ -33,5 +33,5 @@ def dms_ci(p, n, z = 1.96, sub_error=1E-3):
     The confidence intervals are calculated using the Wilson score interval with a bias correction. 
     """
     
-    return wilson(p, n, z, bias_correction)
+    return wilson(p, n, z, sub_error)
     
