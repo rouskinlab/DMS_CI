@@ -57,7 +57,8 @@ high : array_like
 Notes
 -----
 
-The confidence intervals are calculated using the Wilson score interval. A correction is applied to take into account the substitution error.
+The confidence intervals are calculated using the Wilson score interval. 
+A correction is applied to take into account the substitution error.
 ```
 
 
