@@ -28,7 +28,7 @@ def dms_ci(p, n, z = 1.96, bias_correction=1E-3):
     -----
 
     The confidence intervals are calculated using the Wilson score interval. 
-    The bias correction is balances for the substitution errors in the sequencing. 
+    The bias correction balances for the substitution errors in the sequencing. 
 
     """
     
