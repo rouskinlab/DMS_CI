@@ -2,7 +2,7 @@
 from scipy.stats import beta
 import numpy as np
 
-def dms_ci(p, n, alpha = 1.96):
+def dms_ci(p, n, alpha = 0.95):
     """Provides confidence intervals for DMS-MaPseq data.
 
     Parameters
@@ -28,6 +28,9 @@ def dms_ci(p, n, alpha = 1.96):
 
 
     """
+    # formatting
+    p = np.array(p)
+    n = np.array(n)
     
     # compute the distribution beta parameters
     a = p*n
@@ -36,10 +39,16 @@ def dms_ci(p, n, alpha = 1.96):
     # compute the confidence interval
     low, high = beta.ppf(0.5 - alpha/2, a, b), beta.ppf(0.5 + alpha/2, a, b)
     
+    # if p = 0, the bounds are 0
+    low[p == 0] = 0
+    high[p == 0] = 0
+    
     # cap the confidence interval to the [0, 1] range. 
     low = np.clip(low, 0, 1)
-    low[np.isnan(low)] = 0
+    if hasattr(low, '__iter__'):
+        low[np.isnan(low)] = 0
     high = np.clip(high, 0, 1)
-    high[np.isnan(high)] = 1
+    if hasattr(high, '__iter__'):
+        high[np.isnan(high)] = 1
     
     return low, high
