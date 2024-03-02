@@ -40,9 +40,10 @@ def dms_ci(p, n, alpha = 0.95):
     low, high = beta.ppf(0.5 - alpha/2, a, b), beta.ppf(0.5 + alpha/2, a, b)
     
     # if p = 0, the bounds are 0
-    low[p == 0] = 0
-    high[p == 0] = 0
-    
+    if hasattr(low, '__iter__'):
+        low[p == 0] = 0
+        high[p == 0] = 0
+        
     # cap the confidence interval to the [0, 1] range. 
     low = np.clip(low, 0, 1)
     if hasattr(low, '__iter__'):
