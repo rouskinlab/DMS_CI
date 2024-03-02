@@ -27,7 +27,6 @@ This package provides a method to calculate confidence intervals for the DMS-MaP
 ```python
 >>> from dms_ci import dms_ci
 >>> print(dms_ci.__doc__)
-```
 Provides confidence intervals for DMS-MaPseq data.
 
     Parameters
