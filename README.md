@@ -1,3 +1,4 @@
+[![PyPI version](https://badge.fury.io/py/dms_ci.svg)](https://badge.fury.io/py/dms_ci)
 
 # DMS confidence intervals
 
