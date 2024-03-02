@@ -86,7 +86,11 @@ We will assume that:
 We model the substitution rate in the sample as:
 
 $$ p \sim Beta(\alpha, \beta) $$
+
+Where: 
+
 $$ \alpha = N_{mutations} $$
+
 $$ \beta = N_{reads} - N_{mutations} $$
 
 
