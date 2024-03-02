@@ -107,9 +107,3 @@ $$p = \frac{1}{N} \sum_{i=1}^N p_i $$
 
 Therefore, a confidence interval based on the binomial distribution $X \sim Bin(N, p)$ will encompass $f([p_1, p_2, ..., p_N])$.
 
-### Select N given a maximum confidence interval width and a maximum mutation rate
-
-Read the following plot to understand how to select N given a maximum confidence interval width and a maximum mutation rate.
-
-![Select N](figs/how_to_pick_N.png)
-
