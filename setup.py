@@ -5,7 +5,7 @@ requirements = open('requirements.txt').read().splitlines()
 
 setup(
     name='dms_ci',
-    version='0.1.1',
+    version='0.2.0',
     url='https://github.com/rouskinlab/DMS_CI',
     author='Yves Martin',
     author_email='yves@martin.yt',

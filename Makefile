@@ -12,3 +12,5 @@ push_to_pypi:
 	twine upload -r pypi dist/* --user yvesmartindestaillades --password $(PYPI_PASSWORD)
 	rm -fr dist
 
+test:
+	pytest dms_ci/test.py -v

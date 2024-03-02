@@ -1,22 +1,21 @@
-from .src import wilson
+# import beta distribution
+from scipy.stats import beta
+import numpy as np
 
-def dms_ci(p, n, z = 1.96, sub_error=1E-3):
+def dms_ci(p, n, alpha = 1.96):
     """Provides confidence intervals for DMS-MaPseq data.
 
     Parameters
     ----------
 
-    N : array_like
-        Number of reads for each position.
+    p : array_like
+        Number of mutations for each position.
 
     n : array_like
-        Number of mutations for each position.
+        Number of reads for each position.
 
     alpha : float, optional
         Significance level of the confidence interval. Default is 0.05.
-        
-    sub_error: float, optional
-        Probability of having a substitution error in the sequencing. Used to unbias the CI. Default is 1E-3. Read the README for more details.
 
     Returns
     -------
@@ -27,11 +26,20 @@ def dms_ci(p, n, z = 1.96, sub_error=1E-3):
     high : array_like
         Upper confidence interval.
 
-    Notes
-    -----
 
-    The confidence intervals are calculated using the Wilson score interval with a bias correction. 
     """
     
-    return wilson(p, n, z, sub_error)
+    # compute the distribution beta parameters
+    a = p*n
+    b = (1-p)*n
     
+    # compute the confidence interval
+    low, high = beta.ppf(0.5 - alpha/2, a, b), beta.ppf(0.5 + alpha/2, a, b)
+    
+    # cap the confidence interval to the [0, 1] range. 
+    low = np.clip(low, 0, 1)
+    low[np.isnan(low)] = 0
+    high = np.clip(high, 0, 1)
+    high[np.isnan(high)] = 1
+    
+    return low, high
